@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import '../errors/errors.dart';
 
 abstract class HttpManager {
@@ -47,7 +46,6 @@ extension HttpManagerEx on Future<HttpResponse> {
         throw HttpFailure(
           response.statusCode,
           response.data,
-          'HttpFailure ${response.statusCode}',
         );
       }
     } catch (error) {
@@ -57,7 +55,6 @@ extension HttpManagerEx on Future<HttpResponse> {
         }
         rethrow;
       }
-      debugPrint('HTTP ERROR: ${error.toString()}');
     }
   }
 }
