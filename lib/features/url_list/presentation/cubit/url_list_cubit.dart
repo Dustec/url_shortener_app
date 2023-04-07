@@ -14,7 +14,7 @@ class UrlListCubit extends Cubit<UrlListState> {
   UrlListCubit({
     required UrlShortenerRepository urlShortenerRepository,
   })  : _urlRepo = urlShortenerRepository,
-        super(UrlListState()) {
+        super(UrlListState(showFullLoader: true)) {
     _initialize();
   }
 
@@ -33,12 +33,14 @@ class UrlListCubit extends Cubit<UrlListState> {
 
   void _initialize() {
     final StreamSubscription subscription = _urlRepo.getSavedUrls().listen(
-      (List<UrlAlias> list) {
-        emit(state.copyWith(recentUrlsList: list));
-      },
-      onError: handleError,
-      onDone: () {},
-    );
+          (List<UrlAlias> list) {
+            emit(state.copyWith(recentUrlsList: list));
+          },
+          onError: handleError,
+          onDone: () {
+            emit(state.copyWith(showFullLoader: false));
+          },
+        );
     _subscriptions.add(subscription);
   }
 
@@ -47,7 +49,7 @@ class UrlListCubit extends Cubit<UrlListState> {
   }
 
   void onShortUrlTap() {
-    if (state.isLoading || _text.isEmpty) {
+    if (state.isLoading) {
       return;
     }
     if (_text.isEmpty) {
@@ -86,7 +88,7 @@ class UrlListCubit extends Cubit<UrlListState> {
       if ((alias ?? '').isEmpty) {
         return;
       }
-      emit(state.copyWith(isLoading: true));
+      emit(state.copyWith(showFullLoader: true));
       final StreamSubscription subscription =
           _urlRepo.getUrlByAlias(alias!).listen(
                 (List<UrlAlias> list) {
@@ -94,7 +96,7 @@ class UrlListCubit extends Cubit<UrlListState> {
                 },
                 onError: handleError,
                 onDone: () {
-                  emit(state.copyWith(isLoading: false));
+                  emit(state.copyWith(showFullLoader: false));
                 },
               );
       _subscriptions.add(subscription);

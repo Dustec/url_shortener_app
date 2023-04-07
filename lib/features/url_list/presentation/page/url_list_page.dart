@@ -43,7 +43,7 @@ class UrlListPage extends StatelessWidget {
                   ),
                 ),
               ),
-              if (state.isLoading)
+              if (state.showFullLoader)
                 Positioned.fill(
                     child: Container(
                   color: Colors.black26,
