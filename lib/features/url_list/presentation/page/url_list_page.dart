@@ -15,7 +15,7 @@ class UrlListPage extends StatelessWidget {
     final UrlListCubit cubit = context.read();
     return BlocBuilder<UrlListCubit, UrlListState>(
         buildWhen: (UrlListState current, UrlListState prev) =>
-            current.showFullLoader != prev.isLoading,
+            current.showFullLoader != prev.showFullLoader,
         builder: (BuildContext context, UrlListState state) {
           return Stack(
             children: <Widget>[
