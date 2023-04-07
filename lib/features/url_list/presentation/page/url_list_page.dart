@@ -12,30 +12,47 @@ class UrlListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UrlListCubit cubit = context.read();
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('URL Shortener App'),
-          actions: [
-            IconButton(
-              onPressed: () => _showDeleteConfirmationDialog(context, cubit),
-              icon: const Icon(Icons.delete),
-            ),
-          ],
-        ),
-        body: Column(
-          children: const <Widget>[
-            _InputField(),
-            _ListView(),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _showSearchDialog(context, cubit),
-          child: const Icon(Icons.search),
-        ),
-      ),
-    );
+    return BlocBuilder<UrlListCubit, UrlListState>(
+        buildWhen: (UrlListState current, UrlListState prev) =>
+            current.showFullLoader != prev.isLoading,
+        builder: (BuildContext context, UrlListState state) {
+          return Stack(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Scaffold(
+                  appBar: AppBar(
+                    title: const Text('URL Shortener App'),
+                    actions: [
+                      IconButton(
+                        onPressed: () =>
+                            _showDeleteConfirmationDialog(context, cubit),
+                        icon: const Icon(Icons.delete),
+                      ),
+                    ],
+                  ),
+                  body: Column(
+                    children: const <Widget>[
+                      _InputField(),
+                      _ListView(),
+                    ],
+                  ),
+                  floatingActionButton: FloatingActionButton(
+                    onPressed: () => _showSearchDialog(context, cubit),
+                    child: const Icon(Icons.search),
+                  ),
+                ),
+              ),
+              if (state.isLoading)
+                Positioned.fill(
+                    child: Container(
+                  color: Colors.black26,
+                  alignment: Alignment.center,
+                  child: const CircularProgressIndicator(),
+                )),
+            ],
+          );
+        });
   }
 
   _showDeleteConfirmationDialog(BuildContext context, UrlListCubit cubit) {
@@ -65,20 +82,37 @@ class _InputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UrlListCubit cubit = context.read();
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: TextFormField(
-        onChanged: cubit.onTextChanged,
-        decoration: InputDecoration(
-          hintText: 'Enter the link here',
-          suffix: IconButton(
-            iconSize: 25,
-            icon: const Icon(Icons.send),
-            onPressed: cubit.onShortUrlTap,
-          ),
+    return BlocBuilder<UrlListCubit, UrlListState>(
+        builder: (BuildContext context, UrlListState state) {
+      return Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextFormField(
+                onChanged: cubit.onTextChanged,
+                decoration: const InputDecoration(
+                  hintText: 'Enter the link here',
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: state.isLoading
+                  ? Transform.scale(
+                      scale: 0.5,
+                      child: const CircularProgressIndicator(),
+                    )
+                  : IconButton(
+                      iconSize: 25,
+                      icon: const Icon(Icons.send),
+                      onPressed: cubit.onShortUrlTap,
+                    ),
+            ),
+          ],
         ),
-      ),
-    );
+      );
+    });
   }
 }
 

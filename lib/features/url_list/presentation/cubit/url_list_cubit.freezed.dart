@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UrlListState {
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get showFullLoader => throw _privateConstructorUsedError;
   List<UrlAlias> get recentUrlsList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +31,8 @@ abstract class $UrlListStateCopyWith<$Res> {
           UrlListState value, $Res Function(UrlListState) then) =
       _$UrlListStateCopyWithImpl<$Res, UrlListState>;
   @useResult
-  $Res call({bool isLoading, List<UrlAlias> recentUrlsList});
+  $Res call(
+      {bool isLoading, bool showFullLoader, List<UrlAlias> recentUrlsList});
 }
 
 /// @nodoc
@@ -47,12 +49,17 @@ class _$UrlListStateCopyWithImpl<$Res, $Val extends UrlListState>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? showFullLoader = null,
     Object? recentUrlsList = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showFullLoader: null == showFullLoader
+          ? _value.showFullLoader
+          : showFullLoader // ignore: cast_nullable_to_non_nullable
               as bool,
       recentUrlsList: null == recentUrlsList
           ? _value.recentUrlsList
@@ -70,7 +77,8 @@ abstract class _$$_UrlListStateCopyWith<$Res>
       __$$_UrlListStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, List<UrlAlias> recentUrlsList});
+  $Res call(
+      {bool isLoading, bool showFullLoader, List<UrlAlias> recentUrlsList});
 }
 
 /// @nodoc
@@ -85,12 +93,17 @@ class __$$_UrlListStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? showFullLoader = null,
     Object? recentUrlsList = null,
   }) {
     return _then(_$_UrlListState(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showFullLoader: null == showFullLoader
+          ? _value.showFullLoader
+          : showFullLoader // ignore: cast_nullable_to_non_nullable
               as bool,
       recentUrlsList: null == recentUrlsList
           ? _value._recentUrlsList
@@ -105,12 +118,16 @@ class __$$_UrlListStateCopyWithImpl<$Res>
 class _$_UrlListState implements _UrlListState {
   _$_UrlListState(
       {this.isLoading = false,
+      this.showFullLoader = false,
       final List<UrlAlias> recentUrlsList = const <UrlAlias>[]})
       : _recentUrlsList = recentUrlsList;
 
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  @JsonKey()
+  final bool showFullLoader;
   final List<UrlAlias> _recentUrlsList;
   @override
   @JsonKey()
@@ -122,7 +139,7 @@ class _$_UrlListState implements _UrlListState {
 
   @override
   String toString() {
-    return 'UrlListState(isLoading: $isLoading, recentUrlsList: $recentUrlsList)';
+    return 'UrlListState(isLoading: $isLoading, showFullLoader: $showFullLoader, recentUrlsList: $recentUrlsList)';
   }
 
   @override
@@ -132,12 +149,14 @@ class _$_UrlListState implements _UrlListState {
             other is _$_UrlListState &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.showFullLoader, showFullLoader) ||
+                other.showFullLoader == showFullLoader) &&
             const DeepCollectionEquality()
                 .equals(other._recentUrlsList, _recentUrlsList));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading,
+  int get hashCode => Object.hash(runtimeType, isLoading, showFullLoader,
       const DeepCollectionEquality().hash(_recentUrlsList));
 
   @JsonKey(ignore: true)
@@ -150,10 +169,13 @@ class _$_UrlListState implements _UrlListState {
 abstract class _UrlListState implements UrlListState {
   factory _UrlListState(
       {final bool isLoading,
+      final bool showFullLoader,
       final List<UrlAlias> recentUrlsList}) = _$_UrlListState;
 
   @override
   bool get isLoading;
+  @override
+  bool get showFullLoader;
   @override
   List<UrlAlias> get recentUrlsList;
   @override

@@ -115,6 +115,7 @@ class UrlListCubit extends Cubit<UrlListState> {
 class UrlListState with _$UrlListState {
   factory UrlListState({
     @Default(false) bool isLoading,
+    @Default(false) bool showFullLoader,
     @Default(<UrlAlias>[]) List<UrlAlias> recentUrlsList,
   }) = _UrlListState;
 }
