@@ -57,6 +57,7 @@ class UrlShortenerDbSource implements UrlShortenerSource {
 
   @override
   void clear() {
+    _list.clear();
     _dbManager.clear();
   }
 
