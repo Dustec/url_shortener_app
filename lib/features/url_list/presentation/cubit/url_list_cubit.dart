@@ -109,18 +109,12 @@ class UrlListCubit extends Cubit<UrlListState> {
 
   void _handleError(Object? error) {
     if (error is TextFieldEmptyError) {
-      //  handle error here
-      print('TextFieldEmptyError');
       _snackBarHandler.showSnackBar('Link is empty.');
     }
     if (error is UrlAliasNotFound) {
-      //  handle error here
-      print('UrlAliasNotFound');
       _snackBarHandler.showSnackBar('Link was not found.');
     }
     if (error is UrlAliasAlreadySaved) {
-      //  handle error here
-      print('UrlAliasAlreadySaved');
       _snackBarHandler.showSnackBar('Link was already in the list.');
     }
   }
