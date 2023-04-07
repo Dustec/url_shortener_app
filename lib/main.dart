@@ -14,9 +14,9 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  final Directory dir = await getApplicationDocumentsDirectory();
   registerDependencies();
 
+  final Directory dir = await getApplicationDocumentsDirectory();
   final DbManager<UrlAlias> db = injector.get();
   await db.initialize(dir.path);
 
