@@ -1,0 +1,1 @@
+class UrlAliasNotFound implements Exception {}
