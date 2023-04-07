@@ -16,7 +16,7 @@ class UrlListPage extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Nubank Code Challenge'),
+          title: const Text('URL Shortener App'),
           actions: [
             IconButton(
               onPressed: () => _showDeleteConfirmationDialog(context, cubit),
