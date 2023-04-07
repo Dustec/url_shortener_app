@@ -1,4 +1,5 @@
 import 'package:rxdart/rxdart.dart';
+import 'package:url_shortener_app/core/config/environment.dart';
 
 import '../../../../core/domain/errors/errors.dart';
 import '../models/url_alias.dart';
@@ -49,8 +50,7 @@ class UrlShortenerDataRepository implements UrlShortenerRepository {
         yield* _dbSource.saveUrl(
           UrlAlias(
               alias: alias,
-              short:
-                  'https://url-shortener-server.onrender.com/api/alias/$alias',
+              short: '${Environment.baseUrl}api/alias/$alias',
               original: original),
         );
       },

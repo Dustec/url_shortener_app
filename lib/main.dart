@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'core/domain/managers/db_manager.dart';
@@ -9,6 +10,8 @@ import 'features/home/presentation/pages/home_page.dart';
 import 'features/url_shortener/domain/models/url_alias.dart';
 
 void main() async {
+  await dotenv.load(fileName: '.env');
+
   WidgetsFlutterBinding.ensureInitialized();
 
   final Directory dir = await getApplicationDocumentsDirectory();
