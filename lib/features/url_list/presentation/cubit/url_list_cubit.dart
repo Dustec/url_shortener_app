@@ -106,9 +106,15 @@ class UrlListCubit extends Cubit<UrlListState> {
   void handleError(Object? error) {
     if (error is TextFieldEmptyError) {
       //  handle error here
+      print('TextFieldEmptyError');
     }
     if (error is UrlAliasNotFound) {
       //  handle error here
+      print('UrlAliasNotFound');
+    }
+    if (error is UrlAliasAlreadySaved) {
+      //  handle error here
+      print('UrlAliasAlreadySaved');
     }
   }
 }

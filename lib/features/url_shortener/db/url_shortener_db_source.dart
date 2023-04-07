@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:url_shortener_app/core/domain/errors/errors.dart';
 
 import '../../../core/domain/managers/db_manager.dart';
 import '../domain/models/url_alias.dart';
@@ -37,6 +38,11 @@ class UrlShortenerDbSource implements UrlShortenerSource {
 
   @override
   Stream<List<UrlAlias>> saveUrl(UrlAlias urlAlias) async* {
+    if (_list.any((element) => element == urlAlias)) {
+      yield [..._list];
+      throw UrlAliasAlreadySaved();
+    }
+
     _list.add(urlAlias);
     _dbManager.saveItem(urlAlias);
     yield [..._list];
