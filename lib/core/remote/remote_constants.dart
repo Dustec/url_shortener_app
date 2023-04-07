@@ -1,9 +1,5 @@
-mixin RemoteConstants {
-  static const urlShortenerBaseUrl =
-      'https://url-shortener-server.onrender.com/';
-}
+import '../config/environment.dart';
 
 String parseShortenerEndpoint(String endpoint) {
-  return Uri.tryParse('${RemoteConstants.urlShortenerBaseUrl}$endpoint')
-      .toString();
+  return Uri.tryParse('${Environment.baseUrl}$endpoint').toString();
 }
