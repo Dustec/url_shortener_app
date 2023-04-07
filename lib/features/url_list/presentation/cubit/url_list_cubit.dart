@@ -7,18 +7,22 @@ import '../../../../core/domain/errors/errors.dart';
 import '../../../url_shortener/domain/models/url_alias.dart';
 import '../../../url_shortener/domain/repositories.dart/url_shortener_repository.dart';
 import '../../domain/ui_errors.dart';
+import 'snack_bar_handler.dart';
 
 part 'url_list_cubit.freezed.dart';
 
 class UrlListCubit extends Cubit<UrlListState> {
   UrlListCubit({
     required UrlShortenerRepository urlShortenerRepository,
+    required SnackBarHandler snackBarHandler,
   })  : _urlRepo = urlShortenerRepository,
+        _snackBarHandler = snackBarHandler,
         super(UrlListState(showFullLoader: true)) {
     _initialize();
   }
 
   final UrlShortenerRepository _urlRepo;
+  final SnackBarHandler _snackBarHandler;
 
   final List<StreamSubscription> _subscriptions = List.empty(growable: true);
   String _text = '';
@@ -36,7 +40,7 @@ class UrlListCubit extends Cubit<UrlListState> {
           (List<UrlAlias> list) {
             emit(state.copyWith(recentUrlsList: list));
           },
-          onError: handleError,
+          onError: _handleError,
           onDone: () {
             emit(state.copyWith(showFullLoader: false));
           },
@@ -53,7 +57,7 @@ class UrlListCubit extends Cubit<UrlListState> {
       return;
     }
     if (_text.isEmpty) {
-      handleError(TextFieldEmptyError());
+      _handleError(TextFieldEmptyError());
       return;
     }
     emit(state.copyWith(isLoading: true));
@@ -61,7 +65,7 @@ class UrlListCubit extends Cubit<UrlListState> {
           (List<UrlAlias> list) {
             emit(state.copyWith(recentUrlsList: list));
           },
-          onError: handleError,
+          onError: _handleError,
           onDone: () {
             emit(state.copyWith(isLoading: false));
           },
@@ -94,7 +98,7 @@ class UrlListCubit extends Cubit<UrlListState> {
                 (List<UrlAlias> list) {
                   emit(state.copyWith(recentUrlsList: list));
                 },
-                onError: handleError,
+                onError: _handleError,
                 onDone: () {
                   emit(state.copyWith(showFullLoader: false));
                 },
@@ -103,18 +107,21 @@ class UrlListCubit extends Cubit<UrlListState> {
     });
   }
 
-  void handleError(Object? error) {
+  void _handleError(Object? error) {
     if (error is TextFieldEmptyError) {
       //  handle error here
       print('TextFieldEmptyError');
+      _snackBarHandler.showSnackBar('Link is empty.');
     }
     if (error is UrlAliasNotFound) {
       //  handle error here
       print('UrlAliasNotFound');
+      _snackBarHandler.showSnackBar('Link was not found.');
     }
     if (error is UrlAliasAlreadySaved) {
       //  handle error here
       print('UrlAliasAlreadySaved');
+      _snackBarHandler.showSnackBar('Link was already in the list.');
     }
   }
 }

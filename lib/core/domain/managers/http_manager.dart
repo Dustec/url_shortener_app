@@ -26,6 +26,14 @@ class HttpResponse {
   bool get isSuccess => statusCode >= 200 && statusCode < 300;
 }
 
+class HttpFailure implements Exception {
+  HttpFailure(this.statusCode, this.data, [this.message]);
+
+  final int? statusCode;
+  final dynamic data;
+  final String? message;
+}
+
 typedef HttpMapper<T> = T Function(dynamic);
 
 extension HttpManagerEx on Future<HttpResponse> {
@@ -36,12 +44,19 @@ extension HttpManagerEx on Future<HttpResponse> {
         final T parsedObject = mapper(response.data);
         yield parsedObject;
       } else {
-        if (response.statusCode == 404) {
-          throw UrlAliasNotFound();
-        }
-        throw Exception('${response.statusCode} ${response.data}');
+        throw HttpFailure(
+          response.statusCode,
+          response.data,
+          'HttpFailure ${response.statusCode}',
+        );
       }
     } catch (error) {
+      if (error is HttpFailure) {
+        if (error.statusCode == 404) {
+          throw UrlAliasNotFound();
+        }
+        rethrow;
+      }
       debugPrint('HTTP ERROR: ${error.toString()}');
     }
   }

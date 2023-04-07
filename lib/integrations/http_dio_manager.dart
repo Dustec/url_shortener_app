@@ -67,7 +67,13 @@ class HttpDioManager implements HttpManager {
         data: response.data,
       );
     } catch (error) {
-      throw Exception(error);
+      if (error is DioError) {
+        throw HttpFailure(
+          error.response?.statusCode,
+          error.response?.data,
+        );
+      }
+      rethrow;
     }
   }
 }

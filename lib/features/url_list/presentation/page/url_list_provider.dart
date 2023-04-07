@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../di/injector.dart';
+import '../cubit/snack_bar_handler.dart';
 import '../cubit/url_list_cubit.dart';
 import 'url_list_page.dart';
 
@@ -13,6 +14,7 @@ class UrlListProvider extends StatelessWidget {
     return BlocProvider<UrlListCubit>(
       create: (_) => UrlListCubit(
         urlShortenerRepository: injector.get(),
+        snackBarHandler: SnackBarHandlerImp(context),
       ),
       child: const UrlListPage(),
     );
