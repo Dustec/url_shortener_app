@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_shortener_app/features/url_list/presentation/widgets/url_info_dialog.dart';
 
 import '../../../url_shortener/domain/models/url_alias.dart';
 import '../cubit/url_list_cubit.dart';
@@ -130,15 +131,27 @@ class _ListView extends StatelessWidget {
             itemBuilder: (context, index) {
               final UrlAlias item = state.recentUrlsList[index];
               return ListTile(
-                onTap: () {},
+                onTap: () => _showInfoDialog(context, item),
                 contentPadding: EdgeInsets.zero,
                 title: Text(item.alias),
-                subtitle: Text(item.short),
+                subtitle: Text(
+                  item.short,
+                  style: const TextStyle(fontSize: 14),
+                ),
                 leading: const Icon(Icons.help_outline_rounded),
               );
             },
           ),
         );
+      },
+    );
+  }
+
+  void _showInfoDialog(BuildContext context, UrlAlias item) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return UrlInfoDialog(urlAlias: item);
       },
     );
   }
