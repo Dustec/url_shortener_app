@@ -21,6 +21,9 @@ void main() {
     final MockUrlShortenerRepository repo = MockUrlShortenerRepository();
     final MockSnackBarHandler snackBarHandler = MockSnackBarHandler();
 
+    const Key shortUrlButtonKey = ValueKey<String>('ShortUrlButton');
+    const Key urlTextFieldKey = ValueKey<String>('UrlTextField');
+
     UrlListCubit buildCubit() {
       return UrlListCubit(
         urlShortenerRepository: repo,
@@ -33,7 +36,7 @@ void main() {
       reset(snackBarHandler);
     });
 
-    testWidgets('pumpWidget', (tester) async {
+    testWidgets('pumpWidget', (WidgetTester tester) async {
       // Mock and Stubbing
       when(repo.getSavedUrls()).thenAnswer((_) => Stream.value(
             const [
@@ -59,6 +62,39 @@ void main() {
       // Expects and verifies
       expect(find.byType(TextFormField), findsOneWidget);
       expect(find.text('alias'), findsOneWidget);
+    });
+
+    testWidgets('addUrlItem', (WidgetTester tester) async {
+      // Mock and Stubbing
+      when(repo.getSavedUrls()).thenAnswer((_) => Stream.value([]));
+      when(repo.shortUrl(any)).thenAnswer((_) => Stream.value(const [
+            UrlAlias(
+              alias: 'AddedAlias',
+              short: 'short',
+              original: 'original',
+            ),
+          ]));
+      // Set environment
+      final UrlListCubit cubit = buildCubit();
+
+      await tester.pumpWidget(
+        TestWidget(
+          child: BlocProvider.value(
+            value: cubit,
+            child: const UrlListPage(),
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(find.text('AddedAlias'), findsNothing);
+      await tester.pump();
+      // Write in TextField
+      cubit.onTextChanged('original');
+      // Tap on add
+      await tester.tap(find.byKey(shortUrlButtonKey));
+      await tester.pump();
+
+      expect(find.text('AddedAlias'), findsOneWidget);
     });
   });
 }

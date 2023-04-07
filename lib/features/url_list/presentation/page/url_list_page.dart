@@ -91,6 +91,7 @@ class _InputField extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: TextFormField(
+                key: const ValueKey<String>('UrlTextField'),
                 onChanged: cubit.onTextChanged,
                 decoration: const InputDecoration(
                   hintText: 'Enter the link here',
@@ -105,6 +106,7 @@ class _InputField extends StatelessWidget {
                       child: const CircularProgressIndicator(),
                     )
                   : IconButton(
+                      key: const ValueKey<String>('ShortUrlButton'),
                       iconSize: 25,
                       icon: const Icon(Icons.send),
                       onPressed: cubit.onShortUrlTap,
