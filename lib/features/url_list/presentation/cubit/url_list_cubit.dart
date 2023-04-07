@@ -108,7 +108,6 @@ class UrlListCubit extends Cubit<UrlListState> {
   }
 
   void _handleError(Object? error) {
-    print(error);
     if (error is TextFieldEmptyError) {
       _snackBarHandler.showSnackBar('Link is empty.');
       return;

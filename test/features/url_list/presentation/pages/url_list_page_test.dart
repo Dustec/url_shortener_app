@@ -22,7 +22,6 @@ void main() {
     final MockSnackBarHandler snackBarHandler = MockSnackBarHandler();
 
     const Key shortUrlButtonKey = ValueKey<String>('ShortUrlButton');
-    const Key urlTextFieldKey = ValueKey<String>('UrlTextField');
 
     UrlListCubit buildCubit() {
       return UrlListCubit(
